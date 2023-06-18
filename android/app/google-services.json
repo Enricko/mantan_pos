@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "467529108341",
+    "project_id": "mantan-pos-e731d",
+    "storage_bucket": "mantan-pos-e731d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467529108341:android:fb49c3a0ea63e1c021e13c",
+        "android_client_info": {
+          "package_name": "com.example.mantan_pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467529108341-r249lih2i08p58su5v91jbk3t4pb86ki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5fs4vQBtrgSKVSmSWTwWhU-OhCvflxpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467529108341-r249lih2i08p58su5v91jbk3t4pb86ki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
