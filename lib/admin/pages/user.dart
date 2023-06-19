@@ -97,7 +97,7 @@ class _UserPageState extends State<UserPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
+                color: Color(0xFF399D44),
               ),
               padding: EdgeInsets.all(3),
               alignment: Alignment.center,

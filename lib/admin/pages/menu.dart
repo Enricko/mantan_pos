@@ -1,8 +1,12 @@
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mantan_pos/admin/widget/menu/menu_update.dart';
 import 'package:mantan_pos/system/auth.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:mantan_pos/admin/widget/menu/menu_insert.dart';
@@ -17,15 +21,15 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  DatabaseReference? db;
+  SingleValueDropDownController categoryFilter = SingleValueDropDownController();
+  DatabaseReference db = FirebaseDatabase.instance.ref().child('menu');
+  String? filter;
 
   var shim = true;
   var perPageSelected = 10;
   
   @override
   void initState() {
-    print(FirebaseAuth.instance.currentUser!.email);
-    db = FirebaseDatabase.instance.ref().child('menu');
     super.initState();
   }
 
@@ -33,12 +37,74 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+          child: DropDownTextField(
+            controller: categoryFilter,
+            dropDownList: [
+              DropDownValueModel(name: 'Kopi', value: "kopi"),
+              DropDownValueModel(name: 'Jus', value: "jus"),
+              DropDownValueModel(name: 'Susu', value: "susu"),
+            ],
+            clearOption: true,
+            enableSearch: true,
+            textStyle: TextStyle(
+              color: Colors.black
+            ),
+            searchDecoration: const InputDecoration(
+                hintText: "enter your custom hint text here"),
+            validator: (value) {
+              if (value == null) {
+                return "Required field";
+              } else {
+                return null;
+              }
+            },
+            onChanged: (value) {
+              setState(() {
+                filter = categoryFilter.dropDownValue!.value;
+              });
+              // SingleValueDropDownController(data: DropDownValueModel(value: "${data['role']}", name: "${data['role']}"))
+            },
+            textFieldDecoration: InputDecoration(
+              hintText: "Pilih Ketegori Menu",
+              labelText: "Pilih Ketegori Menu",
+              hintStyle: TextStyle(
+                color: Colors.black
+              ),
+              labelStyle: TextStyle(
+                color: Colors.black
+              ),
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(Icons.people),
+              ),
+              filled: true,
+              fillColor: Color.fromARGB(255, 230, 230, 230),
+              prefixIconColor: Colors.black,
+              border: OutlineInputBorder(
+                borderSide: BorderSide(width: 3,color: const Color.fromARGB(255, 230, 230, 230)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 3,color: const Color.fromARGB(255, 230, 230, 230)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        ),
         FirebaseDatabaseQueryBuilder(
           query: db!,
           pageSize: 100000,
           builder: (context, snapshot, _) {
             if(snapshot.hasData){
-              var data = snapshot.docs;
+              final data = snapshot.docs.where((data){
+                final val = data.value as Map;
+                if (filter == null) {
+                  return true;
+                }
+                return val['kategori'] == filter;
+              }).toList();
               List<Widget> listWidget = [];
               
               return Theme(
@@ -81,6 +147,7 @@ class _MenuPageState extends State<MenuPage> {
   }
   PaginatedDataTable TableMedia(dynamic list, db) {
     return PaginatedDataTable(
+      dataRowMaxHeight: 150,
       arrowHeadColor: Colors.black,
       header: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,7 +165,7 @@ class _MenuPageState extends State<MenuPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
+                color: Color(0xFF399D44),
               ),
               padding: EdgeInsets.all(3),
               alignment: Alignment.center,
@@ -124,7 +191,7 @@ class _MenuPageState extends State<MenuPage> {
       },
       columnSpacing: 50,
       rowsPerPage: perPageSelected,
-      columns: <DataColumn>[
+      columns: const <DataColumn>[
         DataColumn(
           label: Text('No'),
         ),
@@ -138,7 +205,7 @@ class _MenuPageState extends State<MenuPage> {
           label: Text('Deskripsi'),
         ),
         DataColumn(
-          label: Text('Category'),
+          label: Text('Kategori'),
         ),
         DataColumn(
           label: Text('Harga'),
@@ -171,36 +238,55 @@ class MyData extends DataTableSource {
       DataCell(
         Image.network(
           "${val['image']}",
-          width: 50,
+          width: 100,
         )
       ),
       DataCell(Text(val['name'])),
-      DataCell(Text(val['deskripsi'])),
-      DataCell(Text(val['category'])),
+      DataCell(
+        Container(
+          width: 250,
+          child: Text(
+            val['deskripsi'],
+            maxLines: 5,
+          ),
+        )
+      ),
+      DataCell(Text(val['kategori'])),
       DataCell(Text("Rp.${val['harga']}")),
       DataCell(
-        Text("")
-        // Row(
-        //   children: [
-        //     Tooltip(
-        //       message: "Update data",
-        //       child: IconButton(
-        //         icon: Icon(
-        //           Icons.note_alt_outlined,
-        //           color: Colors.yellow[900],
-        //         ),
-        //         onPressed: () {
-        //           showDialog(
-        //             context: context, 
-        //             builder: (BuildContext context) { 
-        //               return UserUpdate(uid: uid,role:"admin");
-        //             }, 
-        //           );
-        //         },
-        //       ),
-        //     ),
-        //   ],
-        // )
+        Row(
+          children: [
+            Tooltip(
+              message: "Update data",
+              child: IconButton(
+                icon: Icon(
+                  Icons.note_alt_outlined,
+                  color: Colors.yellow[900],
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) { 
+                      return MenuUpdate(uid: uid);
+                    }, 
+                  );
+                },
+              ),
+            ),
+            Tooltip(
+              message: "Delete data",
+              child: IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.red[900],
+                ),
+                onPressed: () {
+                  delete(context,uid,db,val['image']);
+                },
+              ),
+            ),
+          ],
+        )
       ),
     ]);
   }
@@ -214,4 +300,36 @@ class MyData extends DataTableSource {
   @override
   int get selectedRowCount => 0;
 
+  void delete(BuildContext context,String uid,DatabaseReference db_Ref,String image) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Text('Please Confirm'),
+          content: const Text('Are you sure want to delete?'),
+          actions: [
+            // The "Yes" button
+            TextButton(
+              onPressed: () {
+                db_Ref.child(uid).remove();
+                final del = FirebaseStorage.instance.refFromURL(image);
+                del.delete().whenComplete((){
+                  EasyLoading.showSuccess('Succesfully delete data',dismissOnTap: true);
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Yes')
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.pop(context);
+              },
+              child: const Text('No')
+            )
+          ],
+        );
+      }
+    );
+  }
 }

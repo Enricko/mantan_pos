@@ -79,8 +79,8 @@ class _UserInsertState extends State<UserInsert> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: "Your Name",
-                  labelText: "Your Name",
+                  hintText: "Nama",
+                  labelText: "Nama",
                   hintStyle: TextStyle(
                     color: Colors.black
                   ),
@@ -122,8 +122,8 @@ class _UserInsertState extends State<UserInsert> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: "Your Email",
-                  labelText: "Your Email",
+                  hintText: "Email",
+                  labelText: "Email",
                   hintStyle: TextStyle(
                     color: Colors.black
                   ),
@@ -166,8 +166,8 @@ class _UserInsertState extends State<UserInsert> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: "Your Password",
-                  labelText: "Your Password",
+                  hintText: "Password",
+                  labelText: "Password",
                   hintStyle: TextStyle(
                     color: Colors.black
                   ),
@@ -215,8 +215,8 @@ class _UserInsertState extends State<UserInsert> {
                   }
                 },
                 textFieldDecoration: InputDecoration(
-                  hintText: "Choose Role",
-                  labelText: "Choose Role",
+                  hintText: "Pilih Role",
+                  labelText: "Pilih Role",
                   hintStyle: TextStyle(
                     color: Colors.black
                   ),
@@ -255,7 +255,7 @@ class _UserInsertState extends State<UserInsert> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue,
+                    color: Color(0xFF399D44),
                   ),
                   padding: EdgeInsets.all(15),
                   alignment: Alignment.center,

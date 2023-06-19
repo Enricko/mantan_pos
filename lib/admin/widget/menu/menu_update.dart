@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,14 +11,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mantan_pos/system/menu.dart';
 
-class MenuInsert extends StatefulWidget {
-  const MenuInsert({super.key});
+class MenuUpdate extends StatefulWidget {
+  const MenuUpdate({super.key,required this.uid});
+  final String uid;
 
   @override
-  State<MenuInsert> createState() => _MenuInsertState();
+  State<MenuUpdate> createState() => _MenuUpdateState();
 }
 
-class _MenuInsertState extends State<MenuInsert> {
+class _MenuUpdateState extends State<MenuUpdate> {
   TextEditingController nameController = TextEditingController();
   TextEditingController deskripsiController = TextEditingController();
   TextEditingController hargaController = TextEditingController();
@@ -26,15 +28,20 @@ class _MenuInsertState extends State<MenuInsert> {
   File? file;
   ImagePicker image = ImagePicker();
   Uint8List webImage = Uint8List(8);
-  var url;
+  bool oldImage = true;
+  bool firstLoad = false;
+  var oldUrl;
 
   getImage() async {
     XFile? img = await image.pickImage(source: ImageSource.gallery);
     var f = await img!.readAsBytes();
-    setState(() {
-      webImage = f;
-      file = File(img!.path);
-    });
+    if(img != null){
+      setState(() {
+        webImage = f;
+        file = File(img.path);
+        oldImage = false;
+      });
+    }
   }
 
   submit(BuildContext context){
@@ -49,8 +56,32 @@ class _MenuInsertState extends State<MenuInsert> {
       "harga" : harga,
       "kategori" : kategori,
     };
+    file = File("f");
+    
+    Menu.updateMenu(context, data, webImage, file!,oldUrl,oldImage,widget.uid);
+  }
 
-    Menu.tambahMenu(context, data, webImage, file!);
+  @override
+  void initState() {
+    if (firstLoad == false) {
+      try {
+        FirebaseDatabase.instance.ref().child('menu').child(widget.uid).onValue.listen((event) async {
+          var data = event.snapshot.value as Map;
+
+          setState(() {
+            oldUrl = data['image'];
+          });
+          nameController.text = data['name'];
+          deskripsiController.text = data['deskripsi'];
+          hargaController.text = data['harga'];
+          categoryController = SingleValueDropDownController(data: DropDownValueModel(value: "${data['kategori']}", name: "${data['kategori']}"));
+          firstLoad = true;
+        }); 
+      } catch (e) {
+        print(e); 
+      }
+    }
+    super.initState();
   }
   
   @override
@@ -85,7 +116,8 @@ class _MenuInsertState extends State<MenuInsert> {
                 child: Container(
                   height: 200,
                   width: 200,
-                  child: file == null ?
+                  child: oldUrl == null
+                  ? ( file == null ?
                   Tooltip(
                     message: "Upload Image",
                     child: IconButton(
@@ -98,15 +130,41 @@ class _MenuInsertState extends State<MenuInsert> {
                           getImage();
                         },
                       ),
-                  ): 
-                  MaterialButton(
-                    height: 100,
-                    child: kIsWeb ? Image.memory(webImage!,fit: BoxFit.fill,)
-                        : Image.file(file!,fit: BoxFit.fill,),
-                    onPressed: () {
-                      getImage();
-                    },
+                  ):
+                  Tooltip(
+                    message: "Upload Image",
+                    child: MaterialButton(
+                      height: 100,
+                      child: kIsWeb ? Image.memory(webImage!,fit: BoxFit.fill,)
+                          : Image.file(file!,fit: BoxFit.fill,),
+                      onPressed: () {
+                        getImage();
+                      },
+                    ),
+                  ))
+                  : ( file == null ?
+                  Tooltip(
+                    message: "Upload Image",
+                    child: MaterialButton(
+                      height: 100,
+                      child: Image.network(oldUrl!,fit: BoxFit.fill,),
+                      onPressed: () {
+                        getImage();
+                      },
+                    ),
+                  ):
+                  Tooltip(
+                    message: "Upload Image",
+                    child: MaterialButton(
+                      height: 100,
+                      child: kIsWeb ? Image.memory(webImage!,fit: BoxFit.fill,)
+                          : Image.file(file!,fit: BoxFit.fill,),
+                      onPressed: () {
+                        getImage();
+                      },
+                    ),
                   )
+                  ),
                 ),
               ),
               SizedBox(
@@ -304,7 +362,7 @@ class _MenuInsertState extends State<MenuInsert> {
               ),
               InkWell(
                 onTap: (){
-                  if(deskripsiController.text == '' || hargaController.text == '' || nameController.text == "" || categoryController.dropDownValue!.value == "" || file == null){
+                  if(deskripsiController.text == '' || hargaController.text == '' || nameController.text == "" || categoryController.dropDownValue!.value == ""){
                     EasyLoading.showError('Please Input All Form',dismissOnTap: true);
                     return;
                   }
