@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "467529108341",
+    "firebase_url": "https://mantan-pos-e731d-default-rtdb.firebaseio.com",
     "project_id": "mantan-pos-e731d",
     "storage_bucket": "mantan-pos-e731d.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "467529108341-r249lih2i08p58su5v91jbk3t4pb86ki.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "467529108341-67mq5sevf7inkgipc8jo5avp0qnop75n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mantanPos"
+              }
             }
           ]
         }

@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '467529108341',
     projectId: 'mantan-pos-e731d',
     authDomain: 'mantan-pos-e731d.firebaseapp.com',
+    databaseURL: 'https://mantan-pos-e731d-default-rtdb.firebaseio.com',
     storageBucket: 'mantan-pos-e731d.appspot.com',
     measurementId: 'G-C0F2JX3XTN',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:467529108341:android:fb49c3a0ea63e1c021e13c',
     messagingSenderId: '467529108341',
     projectId: 'mantan-pos-e731d',
+    databaseURL: 'https://mantan-pos-e731d-default-rtdb.firebaseio.com',
     storageBucket: 'mantan-pos-e731d.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:467529108341:ios:49e127c582c840c121e13c',
     messagingSenderId: '467529108341',
     projectId: 'mantan-pos-e731d',
+    databaseURL: 'https://mantan-pos-e731d-default-rtdb.firebaseio.com',
     storageBucket: 'mantan-pos-e731d.appspot.com',
     iosClientId: '467529108341-67mq5sevf7inkgipc8jo5avp0qnop75n.apps.googleusercontent.com',
     iosBundleId: 'com.example.mantanPos',
@@ -76,6 +79,7 @@ class DefaultFirebaseOptions {
     appId: '1:467529108341:ios:5528879724c4a99d21e13c',
     messagingSenderId: '467529108341',
     projectId: 'mantan-pos-e731d',
+    databaseURL: 'https://mantan-pos-e731d-default-rtdb.firebaseio.com',
     storageBucket: 'mantan-pos-e731d.appspot.com',
     iosClientId: '467529108341-ur73puq2i8lrrhg9mn04edevf2d1umfv.apps.googleusercontent.com',
     iosBundleId: 'com.example.mantanPos.RunnerTests',

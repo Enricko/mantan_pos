@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter_easyloading/flutter_easyloading.dart";
+import 'package:mantan_pos/system/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -16,28 +19,21 @@ class _LoginState extends State<Login> {
   bool load = false;
 
   login(BuildContext context) async {
-    try{
-      var mail = email.text;
-      var pass = password.text;
-
-      // Check in input is null
-      if(mail == '' || pass == ''){
-        EasyLoading.showError('Please Input Email & Password',dismissOnTap: true);
-        return;
-      }
-      setState(() {
-        load = true;
-      });
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: mail,
-        password: pass
-      );
-      EasyLoading.showSuccess('Welcome Back',dismissOnTap: true);
-      Navigator.of(context).pushReplacementNamed("/admin");
-    }on Exception catch (e){
-      print(e);
-      EasyLoading.showError('Email or Password incorrect',dismissOnTap: true);
+    var mail = email.text;
+    var pass = password.text;
+    // Check in input is null
+    if(mail == '' || pass == ''){
+      EasyLoading.showError('Please Input Email & Password',dismissOnTap: true);
+      return;
     }
+    setState(() {
+      load = true;
+    });
+    var data = {
+      "email":mail,
+      "password":pass,
+    };
+    Auth.login(data, context);
     setState(() {
       load = false;
     });
@@ -78,6 +74,13 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                       color: Colors.black
                     ),
+                    validator: (value) {
+                      if (value == null) {
+                        return "Required field";
+                      } else {
+                        return null;
+                      }
+                    },
                     decoration: InputDecoration(
                       hintText: "Your Email",
                       labelText: "Your Email",
@@ -115,6 +118,13 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                       color: Colors.black
                     ),
+                    validator: (value) {
+                      if (value == null) {
+                        return "Required field";
+                      } else {
+                        return null;
+                      }
+                    },
                     decoration: InputDecoration(
                       hintText: "Your Password",
                       labelText: "Your Password",
@@ -154,7 +164,7 @@ class _LoginState extends State<Login> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue,
+                        color: Color(0xFF399D44),
                       ),
                       padding: EdgeInsets.all(15),
                       alignment: Alignment.center,
