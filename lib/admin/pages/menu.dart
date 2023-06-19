@@ -42,11 +42,12 @@ class _MenuPageState extends State<MenuPage> {
           child: DropDownTextField(
             controller: categoryFilter,
             dropDownList: [
+              DropDownValueModel(name: 'Semua Menu', value: "all"),
               DropDownValueModel(name: 'Kopi', value: "kopi"),
               DropDownValueModel(name: 'Jus', value: "jus"),
               DropDownValueModel(name: 'Susu', value: "susu"),
             ],
-            clearOption: true,
+            clearOption: false,
             enableSearch: true,
             textStyle: TextStyle(
               color: Colors.black
@@ -100,7 +101,7 @@ class _MenuPageState extends State<MenuPage> {
             if(snapshot.hasData){
               final data = snapshot.docs.where((data){
                 final val = data.value as Map;
-                if (filter == null) {
+                if (filter == null || categoryFilter.dropDownValue!.value == "all") {
                   return true;
                 }
                 return val['kategori'] == filter;
@@ -305,8 +306,8 @@ class MyData extends DataTableSource {
       context: context,
       builder: (BuildContext ctx) {
         return AlertDialog(
-          title: const Text('Please Confirm'),
-          content: const Text('Are you sure want to delete?'),
+          title: const Text('Tolong Konfirmasi'),
+          content: const Text('Apakah anda yakin untuk menghapus data ini?'),
           actions: [
             // The "Yes" button
             TextButton(
@@ -314,18 +315,18 @@ class MyData extends DataTableSource {
                 db_Ref.child(uid).remove();
                 final del = FirebaseStorage.instance.refFromURL(image);
                 del.delete().whenComplete((){
-                  EasyLoading.showSuccess('Succesfully delete data',dismissOnTap: true);
+                  EasyLoading.showSuccess('Meja berhasil di hapus',dismissOnTap: true);
                 });
                 Navigator.pop(context);
               },
-              child: const Text('Yes')
+              child: const Text('Ya')
             ),
             TextButton(
               onPressed: () {
                 // Close the dialog
                 Navigator.pop(context);
               },
-              child: const Text('No')
+              child: const Text('Tidak')
             )
           ],
         );

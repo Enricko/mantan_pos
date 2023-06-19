@@ -39,6 +39,9 @@ class MyApp extends StatelessWidget {
         
         // Admin Menu
         "/admin/menu": (context) => AdminHome(page:"menu"),
+
+        // Admin Meja
+        "/admin/meja": (context) => AdminHome(page:"meja"),
       },
       initialRoute: '/admin',
     );

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mantan_pos/admin/pages/meja.dart';
 import 'package:mantan_pos/admin/pages/menu.dart';
 import 'package:mantan_pos/admin/pages/user.dart';
 import 'package:mantan_pos/system/auth.dart';
@@ -21,6 +22,7 @@ class _AdminHomeState extends State<AdminHome> {
     'user/kasir' : UserPage(role:"kasir"),
 
     'menu' : MenuPage(),
+    'meja' : MejaPage(),
   };
   String? role;
 
@@ -164,6 +166,40 @@ class _AdminHomeState extends State<AdminHome> {
               Container(
                 padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
                 child: Text(
+                  "Meja",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14
+                  ),
+                ),
+              ),
+              ListTile(
+                selectedColor: Color(0xFF399D44),
+                hoverColor: Color(0xFF399D44),
+                tileColor: widget.page.contains('meja') == true ? Color(0xFF399D44) : null,
+                title: Container(
+                  child: Row(
+                    children: [
+                      Icon(Icons.food_bank,size: 16,color: Colors.black),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Meja',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/admin/meja'),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
+                child: Text(
                   "Menu",
                   style: TextStyle(
                     color: Colors.black,
@@ -174,6 +210,7 @@ class _AdminHomeState extends State<AdminHome> {
               ListTile(
                 selectedColor: Color(0xFF399D44),
                 hoverColor: Color(0xFF399D44),
+                tileColor: widget.page.contains('menu') == true ? Color(0xFF399D44) : null,
                 title: Container(
                   child: Row(
                     children: [
