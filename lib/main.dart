@@ -6,7 +6,7 @@ import 'package:mantan_pos/firebase_options.dart';
 
 // Import Pages
 import 'admin/login.dart';
-import 'pages/home.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -27,23 +27,24 @@ class MyApp extends StatelessWidget {
       ),
       builder: EasyLoading.init(),
       routes: {
-        "/": (context) => HomePage(),
-
         // Admin
         "/login": (context) => Login(),
-        "/admin": (context) => AdminHome(page:"dashboard"),
+        "/": (context) => AdminHome(page:"dashboard"),
 
         // Admin User
-        "/admin/user/admin": (context) => AdminHome(page:"user/admin"),
-        "/admin/user/kasir": (context) => AdminHome(page:"user/kasir"),
+        "/user/admin": (context) => AdminHome(page:"user/admin"),
+        "/user/kasir": (context) => AdminHome(page:"user/kasir"),
         
         // Admin Menu
-        "/admin/menu": (context) => AdminHome(page:"menu"),
+        "/menu": (context) => AdminHome(page:"menu"),
 
         // Admin Meja
-        "/admin/meja": (context) => AdminHome(page:"meja"),
+        "/meja": (context) => AdminHome(page:"meja"),
+
+        // Transaksi
+        "/order": (context) => AdminHome(page:"order"),
       },
-      initialRoute: '/admin',
+      initialRoute: '/',
     );
   }
 }

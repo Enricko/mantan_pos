@@ -8,6 +8,7 @@ class Meja {
     final key = db.push().key;
     db.child(key!).set({
       "no_meja": total.toString(),
+      "status_meja": "kosong",
     }).whenComplete(() {
       EasyLoading.showSuccess('Meja telah di tambahkan',dismissOnTap: true);
       return;

@@ -1,22 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mantan_pos/system/meja.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:mantan_pos/admin/widget/order.dart';
 import 'package:shimmer/shimmer.dart';
 
-class MejaPage extends StatefulWidget {
-  const MejaPage({super.key});
+class OrderPage extends StatefulWidget {
+  const OrderPage({super.key});
 
   @override
-  State<MejaPage> createState() => _MejaPageState();
+  State<OrderPage> createState() => _OrderPageState();
 }
 
-class _MejaPageState extends State<MejaPage> {
-  DatabaseReference db = FirebaseDatabase.instance.ref().child('meja');
+class _OrderPageState extends State<OrderPage> {
+  DatabaseReference db = FirebaseDatabase.instance.ref().child('orderan');
 
   var shim = true;
   var perPageSelected = 10;
@@ -72,70 +69,12 @@ class _MejaPageState extends State<MejaPage> {
   }
   PaginatedDataTable TableMedia(List list, db,int total) {
     return PaginatedDataTable(
-      dataRowMaxHeight: 150,
+      dataRowMaxHeight: 50,
       arrowHeadColor: Colors.black,
       header: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Table Meja"),
-          Text("Total Meja (${total})"),
-          Row(
-            children: [
-              InkWell(
-                onTap: (){
-                  Meja.tambahMeja(total + 1,context);
-                }, 
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF399D44),
-                  ),
-                  padding: EdgeInsets.all(3),
-                  alignment: Alignment.center,
-                  width: 40,
-                  height: 40,
-                  child: Text(
-                    "+",
-                    style: GoogleFonts.roboto(
-                      color:Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              InkWell(
-                onTap: (){
-                  if (total <= 0) {
-                    EasyLoading.showError('Meja tidak dapat di hapus lagi',dismissOnTap: true);
-                    return;
-                  }
-                  Meja.hapusMeja(context,list.last.key);
-                }, 
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.redAccent,
-                  ),
-                  padding: EdgeInsets.all(3),
-                  alignment: Alignment.center,
-                  width: 40,
-                  height: 40,
-                  child: Text(
-                    "-",
-                    style: GoogleFonts.roboto(
-                      color:Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14
-                    ),
-                  ),
-                )
-              ),
-            ],
-          )
+          Text("Table Orderan"),
         ],
       ),
       onRowsPerPageChanged: (perPage) {
@@ -151,13 +90,22 @@ class _MejaPageState extends State<MejaPage> {
           label: Text('No'),
         ),
         DataColumn(
-          label: Text('QR Image'),
+          label: Text('Nama Customer'),
         ),
         DataColumn(
           label: Text('No Meja'),
         ),
         DataColumn(
-          label: Text('Status Meja'),
+          label: Text('Status'),
+        ),
+        DataColumn(
+          label: Text('Tgl Order'),
+        ),
+        DataColumn(
+          label: Text('Total Harga'),
+        ),
+        DataColumn(
+          label: Text('List Order'),
         ),
       ],
       source: MyData(data: list,db:db,context: context),
@@ -181,15 +129,53 @@ class MyData extends DataTableSource {
     final val = data[index].value as Map<String,dynamic>;
     return DataRow(cells: [
       DataCell(Text("${index + 1}")),
-      DataCell(
-        Image.network(
-          "https://chart.apis.google.com/chart?cht=qr&chl=$uid&chs=125",
-          width: 125,
-        )
-        // Text(""),
-      ),
+      DataCell(Text(val['name_customer'].toString())),
       DataCell(Text(val['no_meja'].toString())),
-      DataCell(Text(val['status_meja'].toString())),
+      DataCell(
+        Container(
+          constraints: BoxConstraints(
+            minWidth: 50,
+            maxWidth: 200,
+          ),
+          child: Text(
+            val['catatan'].toString(),
+            maxLines: 5,
+          ),
+        )
+      ),
+      DataCell(Text(val['status'].toString())),
+      DataCell(Text(val['create_at'].toString())),
+      DataCell(Text("Rp.${val['total_harga'].toString()}")),
+      DataCell(
+        InkWell(
+          onTap: (){
+            showDialog(
+              context: context, 
+              builder: (BuildContext context) { 
+                return ListOrder(uid:uid);
+              }, 
+            );
+          }, 
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color(0xFF399D44),
+            ),
+            padding: EdgeInsets.all(3),
+            alignment: Alignment.center,
+            width: 110,
+            height: 40,
+            child: Text(
+              "List Order",
+              style: GoogleFonts.roboto(
+                color:Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 14
+              ),
+            ),
+          )
+        ),
+      ),
     ]);
   }
 

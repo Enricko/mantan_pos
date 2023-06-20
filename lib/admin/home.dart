@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mantan_pos/admin/pages/dashboard.dart';
 import 'package:mantan_pos/admin/pages/meja.dart';
 import 'package:mantan_pos/admin/pages/menu.dart';
+import 'package:mantan_pos/admin/pages/order.dart';
 import 'package:mantan_pos/admin/pages/user.dart';
 import 'package:mantan_pos/system/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,13 +18,14 @@ class AdminHome extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHome> {
   final pages = <String,dynamic>{
-    'dashboard' : Container(),
+    'dashboard' : DashboardPage(),
 
     'user/admin' : UserPage(role:"admin"),
     'user/kasir' : UserPage(role:"kasir"),
 
     'menu' : MenuPage(),
     'meja' : MejaPage(),
+    'order' : OrderPage(),
   };
   String? role;
 
@@ -71,7 +74,7 @@ class _AdminHomeState extends State<AdminHome> {
               Container(
                 margin: EdgeInsets.only(left: 15,top: 15,bottom: 10),
                 child: Text(
-                  "Dashboard",
+                  "Main Menu",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14
@@ -100,13 +103,94 @@ class _AdminHomeState extends State<AdminHome> {
                     ],
                   ),
                 ),
-                onTap: () => Navigator.pushNamed(context, '/admin'),
+                onTap: () => Navigator.pushNamed(context, '/'),
               ),
-              role == "kasir" ? Container() :
+              ListTile(
+                selectedColor: Color(0xFF399D44),
+                hoverColor: Color(0xFF399D44),
+                tileColor: widget.page.contains('meja') == true ? Color(0xFF399D44) : null,
+                title: Container(
+                  child: Row(
+                    children: [
+                      Icon(Icons.table_bar,size: 16,color: Colors.black),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Meja',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/meja'),
+              ),
+              ListTile(
+                selectedColor: Color(0xFF399D44),
+                hoverColor: Color(0xFF399D44),
+                tileColor: widget.page.contains('menu') == true ? Color(0xFF399D44) : null,
+                title: Container(
+                  child: Row(
+                    children: [
+                      Icon(Icons.food_bank,size: 16,color: Colors.black),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Menu',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/menu'),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 15,top: 15,bottom: 10),
+                child: Text(
+                  "Transaksi",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14
+                  ),
+                ),
+              ),
+              ListTile(
+                selectedColor: Color(0xFF399D44),
+                hoverColor: Color(0xFF399D44),
+                tileColor: widget.page.contains('order') == true ? Color(0xFF399D44) : null,
+                title: Container(
+                  child: Row(
+                    children: [
+                      Icon(Icons.list_alt,size: 16,color: Colors.black),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Order',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/order'),
+              ),
               Container(
                 padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
                 child: Text(
-                  "User",
+                  "Settings",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14
@@ -136,7 +220,7 @@ class _AdminHomeState extends State<AdminHome> {
                     ],
                   ),
                 ),
-                onTap: () => Navigator.pushNamed(context, '/admin/user/admin'),
+                onTap: () => Navigator.pushNamed(context, '/user/admin'),
               ),
               role == "kasir" ? Container() :
               ListTile(
@@ -161,85 +245,7 @@ class _AdminHomeState extends State<AdminHome> {
                     ],
                   ),
                 ),
-                onTap: () => Navigator.pushNamed(context, '/admin/user/kasir'),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
-                child: Text(
-                  "Meja",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14
-                  ),
-                ),
-              ),
-              ListTile(
-                selectedColor: Color(0xFF399D44),
-                hoverColor: Color(0xFF399D44),
-                tileColor: widget.page.contains('meja') == true ? Color(0xFF399D44) : null,
-                title: Container(
-                  child: Row(
-                    children: [
-                      Icon(Icons.food_bank,size: 16,color: Colors.black),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Meja',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () => Navigator.pushNamed(context, '/admin/meja'),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
-                child: Text(
-                  "Menu",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14
-                  ),
-                ),
-              ),
-              ListTile(
-                selectedColor: Color(0xFF399D44),
-                hoverColor: Color(0xFF399D44),
-                tileColor: widget.page.contains('menu') == true ? Color(0xFF399D44) : null,
-                title: Container(
-                  child: Row(
-                    children: [
-                      Icon(Icons.food_bank,size: 16,color: Colors.black),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Menu',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () => Navigator.pushNamed(context, '/admin/menu'),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
-                child: Text(
-                  "Settings",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14
-                  ),
-                ),
+                onTap: () => Navigator.pushNamed(context, '/user/kasir'),
               ),
               ListTile(
                 selectedColor: Color(0xFF399D44),

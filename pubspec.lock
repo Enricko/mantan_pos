@@ -573,6 +573,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  responsive_ui:
+    dependency: "direct main"
+    description:
+      name: responsive_ui
+      sha256: "2d1c9ef15e7467533e56d54c38363c66a870da24c1ef49d760c16efb96fb1b0d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   shared_preferences:
     dependency: "direct main"
     description:

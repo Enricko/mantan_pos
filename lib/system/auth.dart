@@ -26,7 +26,7 @@ class Auth {
       });
       
       EasyLoading.showSuccess('Welcome Back',dismissOnTap: true);
-      Navigator.of(context).pushReplacementNamed("/admin");
+      Navigator.of(context).pushReplacementNamed("/");
     }on Exception catch (e){
       print(e);
       EasyLoading.showError('Email or Password incorrect',dismissOnTap: true);
