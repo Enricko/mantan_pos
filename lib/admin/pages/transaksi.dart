@@ -6,15 +6,15 @@ import 'package:mantan_pos/admin/widget/order.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:intl/intl.dart' as intl;
 
-class OrderPage extends StatefulWidget {
-  const OrderPage({super.key});
+class TransaksiPage extends StatefulWidget {
+  const TransaksiPage({super.key});
 
   @override
-  State<OrderPage> createState() => _OrderPageState();
+  State<TransaksiPage> createState() => _TransaksiPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
-  DatabaseReference db = FirebaseDatabase.instance.ref().child('orderan');
+class _TransaksiPageState extends State<TransaksiPage> {
+  DatabaseReference db = FirebaseDatabase.instance.ref().child('transaksi');
   TextEditingController nameFilter = TextEditingController();
   String? filter;
 
@@ -127,7 +127,7 @@ class _OrderPageState extends State<OrderPage> {
       header: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Table Orderan"),
+          Text("Table Transaksi"),
         ],
       ),
       onRowsPerPageChanged: (perPage) {
@@ -146,6 +146,9 @@ class _OrderPageState extends State<OrderPage> {
           label: Text('Nama Customer'),
         ),
         DataColumn(
+          label: Text('Nama Kasir'),
+        ),
+        DataColumn(
           label: Text('No Meja'),
         ),
         DataColumn(
@@ -161,7 +164,7 @@ class _OrderPageState extends State<OrderPage> {
           label: Text('Total Harga'),
         ),
         DataColumn(
-          label: Text('List Order & Bayar'),
+          label: Text('List Order'),
         ),
       ],
       source: MyData(data: list,db:db,context: context),
@@ -186,6 +189,7 @@ class MyData extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text("${index + 1}")),
       DataCell(Text(val['name_customer'].toString())),
+      DataCell(Text(val['name_kasir'].toString())),
       DataCell(Text(val['no_meja'].toString())),
       DataCell(
         Container(
@@ -208,7 +212,7 @@ class MyData extends DataTableSource {
             showDialog(
               context: context, 
               builder: (BuildContext context) { 
-                return ListOrder(uid:uid,type: "orderan",);
+                return ListOrder(uid:uid,type: "transaksi");
               }, 
             );
           }, 
@@ -219,10 +223,10 @@ class MyData extends DataTableSource {
             ),
             padding: EdgeInsets.all(3),
             alignment: Alignment.center,
-            width: 140,
+            width: 110,
             height: 40,
             child: Text(
-              "List Order & Bayar",
+              "List Order",
               style: GoogleFonts.roboto(
                 color:Colors.white,
                 fontWeight: FontWeight.w800,

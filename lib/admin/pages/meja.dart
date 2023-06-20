@@ -155,9 +155,6 @@ class _MejaPageState extends State<MejaPage> {
         DataColumn(
           label: Text('No Meja'),
         ),
-        DataColumn(
-          label: Text('Status Meja'),
-        ),
       ],
       source: MyData(data: list,db:db,context: context),
     );
@@ -188,7 +185,6 @@ class MyData extends DataTableSource {
         // Text(""),
       ),
       DataCell(Text(val['no_meja'].toString())),
-      DataCell(Text(val['status_meja'].toString())),
     ]);
   }
 

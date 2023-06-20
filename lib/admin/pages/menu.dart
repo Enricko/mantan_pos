@@ -10,6 +10,7 @@ import 'package:mantan_pos/admin/widget/menu/menu_update.dart';
 import 'package:mantan_pos/system/auth.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:mantan_pos/admin/widget/menu/menu_insert.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../widget/user/user_insert.dart';
 
@@ -253,7 +254,7 @@ class MyData extends DataTableSource {
         )
       ),
       DataCell(Text(val['kategori'])),
-      DataCell(Text("Rp.${val['harga']}")),
+      DataCell(Text("Rp.${intl.NumberFormat.decimalPattern().format(val['harga'])}")),
       DataCell(
         Row(
           children: [

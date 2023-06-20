@@ -15,12 +15,16 @@ class Auth {
         password: data['password']
       );
       FirebaseDatabase.instance.ref().child("user").onValue.listen((event) async {
-        var data = event.snapshot.value as Map;
+        var val = event.snapshot.value as Map;
         SharedPreferences pref = await SharedPreferences.getInstance();
 
         if (event.snapshot.child("admin").hasChild(user.user!.uid)) {
+          var getAdminUser = event.snapshot.child("admin").child(user.user!.uid).value as Map;
+          pref.setString("name_user", getAdminUser['name'].toString());
           pref.setString("role", "admin");
         }else if(event.snapshot.child("kasir").hasChild(user.user!.uid)){
+          var getKasirUser = event.snapshot.child("kasir").child(user.user!.uid).value as Map;
+          pref.setString("name_user", getKasirUser['name'].toString());
           pref.setString("role", "kasir");
         }
       });

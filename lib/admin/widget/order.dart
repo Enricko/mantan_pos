@@ -1,11 +1,15 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mantan_pos/system/transaksi.dart';
+import 'package:intl/intl.dart' as intl;
 
 class ListOrder extends StatefulWidget {
-  const ListOrder({super.key, required this.uid});
+  const ListOrder({super.key, required this.uid,required this.type});
   final String uid;
+  final String type;
 
   @override
   State<ListOrder> createState() => _ListOrderState();
@@ -38,7 +42,7 @@ class _ListOrderState extends State<ListOrder> {
                 ),
               ),
               FirebaseDatabaseQueryBuilder(
-                query: FirebaseDatabase.instance.ref().child("orderan").child(widget.uid).child("list_order"),
+                query: FirebaseDatabase.instance.ref().child(widget.type).child(widget.uid).child("list_order"),
                 builder: (context, snapshot, child) {
                   final data = snapshot.docs;
                   List<DataRow> rows = [];
@@ -57,13 +61,13 @@ class _ListOrderState extends State<ListOrder> {
                             Text("${val['nama']}")
                           ),
                           DataCell(
-                            Text("Rp.${val['satuan']}")
+                            Text("Rp.${intl.NumberFormat.decimalPattern().format(val['satuan'])}")
                           ),
                           DataCell(
                             Text("${val['qty']}")
                           ),
                           DataCell(
-                            Text("Rp.${val['total_harga']}")
+                            Text("Rp.${intl.NumberFormat.decimalPattern().format(val['total_harga'])}")
                           ),
                         ]
                       )
@@ -141,11 +145,62 @@ class _ListOrderState extends State<ListOrder> {
                     ],
                   );
                 },
-              )
+              ),
+              widget.type == "transaksi" ? Container() :
+              InkWell(
+                onTap: (){
+                  bayar(context,widget.uid);
+                }, 
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF399D44),
+                  ),
+                  padding: EdgeInsets.all(15),
+                  alignment: Alignment.center,
+                  width: 350,
+                  child: Text(
+                    "Bayar",
+                    style: GoogleFonts.roboto(
+                      color:Colors.white,
+                      fontWeight: FontWeight.w800
+                    ),
+                  ),
+                )
+              ),
             ],
           ),
         );
       }),
+    );
+  }
+  void bayar(BuildContext context,String uid) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Text('Tolong Konfirmasi'),
+          content: const Text('Apakah anda yakin?'),
+          actions: [
+            // The "Yes" button
+            TextButton(
+              onPressed: () {
+                Transaksi.bayar(context,uid);
+                EasyLoading.show(status: 'loading...');
+                Navigator.pop(context);
+              },
+              child: const Text('Ya')
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.pop(context);
+              },
+              child: const Text('Tidak')
+            )
+          ],
+        );
+      }
     );
   }
 }

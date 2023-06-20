@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
 
         // Transaksi
         "/order": (context) => AdminHome(page:"order"),
+        "/transaksi": (context) => AdminHome(page:"transaksi"),
       },
       initialRoute: '/',
     );

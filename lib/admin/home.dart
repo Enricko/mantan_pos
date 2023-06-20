@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mantan_pos/admin/pages/dashboard.dart';
 import 'package:mantan_pos/admin/pages/meja.dart';
 import 'package:mantan_pos/admin/pages/menu.dart';
 import 'package:mantan_pos/admin/pages/order.dart';
+import 'package:mantan_pos/admin/pages/transaksi.dart';
 import 'package:mantan_pos/admin/pages/user.dart';
 import 'package:mantan_pos/system/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +29,7 @@ class _AdminHomeState extends State<AdminHome> {
     'menu' : MenuPage(),
     'meja' : MejaPage(),
     'order' : OrderPage(),
+    'transaksi' : TransaksiPage(),
   };
   String? role;
 
@@ -53,6 +57,51 @@ class _AdminHomeState extends State<AdminHome> {
       appBar: AppBar(
         backgroundColor: Color(0xFF399D44),
         // automaticallyImplyLeading: false,
+        actions: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: FirebaseDatabaseQueryBuilder(
+              query: FirebaseDatabase.instance.ref().child("orderan"),
+              builder: (context, snapshot, child) {
+                return InkWell(
+                  onTap: () => Navigator.pushNamed(context, '/order'),
+                  child: Stack(
+                    children: [
+                      Icon(
+                        Icons.notifications,
+                        // size: 10,
+                      ),
+                      snapshot.docs.length == 0 ? Text('') :
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(1),
+                          decoration:  BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 13,
+                            minHeight: 13,
+                          ),
+                          child: Text(
+                            '${snapshot.docs.length}',
+                            style:  TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          )
+          
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -186,6 +235,30 @@ class _AdminHomeState extends State<AdminHome> {
                   ),
                 ),
                 onTap: () => Navigator.pushNamed(context, '/order'),
+              ),
+              ListTile(
+                selectedColor: Color(0xFF399D44),
+                hoverColor: Color(0xFF399D44),
+                tileColor: widget.page.contains('transaksi') == true ? Color(0xFF399D44) : null,
+                title: Container(
+                  child: Row(
+                    children: [
+                      Icon(Icons.payment,size: 16,color: Colors.black),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Transaksi',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () => Navigator.pushNamed(context, '/transaksi'),
               ),
               Container(
                 padding: EdgeInsets.only(left: 15,top: 15,bottom: 10),
