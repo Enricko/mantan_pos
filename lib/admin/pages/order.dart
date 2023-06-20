@@ -69,7 +69,7 @@ class _OrderPageState extends State<OrderPage> {
   }
   PaginatedDataTable TableMedia(List list, db,int total) {
     return PaginatedDataTable(
-      dataRowMaxHeight: 50,
+      dataRowMaxHeight: 100,
       arrowHeadColor: Colors.black,
       header: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,6 +94,9 @@ class _OrderPageState extends State<OrderPage> {
         ),
         DataColumn(
           label: Text('No Meja'),
+        ),
+        DataColumn(
+          label: Text('Catatan'),
         ),
         DataColumn(
           label: Text('Status'),
@@ -126,7 +129,7 @@ class MyData extends DataTableSource {
       return null;
     }
     final uid = data[index].key;
-    final val = data[index].value as Map<String,dynamic>;
+    final val = data[index].value as Map;
     return DataRow(cells: [
       DataCell(Text("${index + 1}")),
       DataCell(Text(val['name_customer'].toString())),

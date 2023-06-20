@@ -158,7 +158,7 @@ class MyData extends DataTableSource {
       return null;
     }
     final uid = data[index].key;
-    final val = data[index].value as Map<String,dynamic>;
+    final val = data[index].value as Map;
     return DataRow(cells: [
       DataCell(Text("${index + 1}")),
       DataCell(Text(val['name'])),
