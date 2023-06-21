@@ -1,10 +1,13 @@
 import 'package:d_chart/d_chart.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mantan_pos/admin/widget/chart.dart';
 import 'package:responsive_ui/responsive_ui.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:date_field/date_field.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -14,6 +17,24 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  SingleValueDropDownController typeFilter = SingleValueDropDownController();
+  final intlFormat = intl.NumberFormat("#,##0.00");
+  DateTime dateFilter = DateTime.now();
+  String? filter;
+
+  String currencyFormat(value){
+    String val = "";
+    if (value >= 1000000000) {
+      val = "${intlFormat.format(value / 1000000000)} T";
+    }else if(value >= 1000000){
+      val = "${intlFormat.format(value / 1000000)} M";
+    }else if(value >= 1000){
+      val = "${intlFormat.format(value / 1000)} Jt";
+    }else{
+      val = "${intlFormat.format(value)} K";
+    }
+    return val;
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,6 +64,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   colXL: 3,
                 ),
                 child: FirebaseDatabaseQueryBuilder(
+                  pageSize: 1000000,
                   query: FirebaseDatabase.instance.ref().child("menu"), 
                   builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
                     return Container(
@@ -96,6 +118,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   colXL: 3,
                 ),
                 child: FirebaseDatabaseQueryBuilder(
+                  pageSize: 1000000,
                   query: FirebaseDatabase.instance.ref().child("meja"), 
                   builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
                     return Container(
@@ -149,6 +172,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   colXL: 3,
                 ),
                 child: FirebaseDatabaseQueryBuilder(
+                  pageSize: 1000000,
                   query: FirebaseDatabase.instance.ref().child("user").child("kasir"), 
                   builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
                     return Container(
@@ -202,6 +226,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   colXL: 3,
                 ),
                 child: FirebaseDatabaseQueryBuilder(
+                  pageSize: 1000000,
                   query: FirebaseDatabase.instance.ref().child("user").child("admin"), 
                   builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
                     return Container(
@@ -249,7 +274,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ],
           ),
           Responsive(
-            children: [
+              children: [
               Div(
                 divison: Division(
                   colXS: 12,
@@ -265,16 +290,311 @@ class _DashboardPageState extends State<DashboardPage> {
                         margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Laporan Transaksi",
+                          "Laporan Harian",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700
                           ),
                         ),
                       ),
-                      Row(
+                      Responsive(
                         children: [
-                          
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 12,
+                              colM: 6,
+                              colL: 6,
+                              colXL: 6
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                              child: DateTimeFormField(
+                                decoration: InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.black45),
+                                  errorStyle: TextStyle(color: Colors.redAccent),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(width: 3,color: const Color.fromARGB(255, 230, 230, 230)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  labelText: 'Select Date',
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 230, 230, 230),
+                                ),
+                                mode: DateTimeFieldPickerMode.date,
+                                // autovalidateMode: AutovalidateMode.always,
+                                // validator: (e) => (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
+                                onDateSelected: (DateTime value) {
+                                  setState(() {
+                                    dateFilter = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 12,
+                              colM: 6,
+                              colL: 6,
+                              colXL: 6,
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                              child: DropDownTextField(
+                                controller: typeFilter,
+                                dropDownList: [
+                                  DropDownValueModel(name: 'Pendapatan', value: "pendapatan"),
+                                  DropDownValueModel(name: 'Orderan', value: "orderan"),
+                                ],
+                                clearOption: false,
+                                enableSearch: true,
+                                textStyle: TextStyle(
+                                  color: Colors.black
+                                ),
+                                searchDecoration: const InputDecoration(
+                                    hintText: "enter your custom hint text here"),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Required field";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    filter = typeFilter.dropDownValue!.value;
+                                  });
+                                },
+                                textFieldDecoration: InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.black45),
+                                  errorStyle: TextStyle(color: Colors.redAccent),
+                                  border: OutlineInputBorder(
+                                    borderSide:BorderSide(width: 3,color: const Color.fromARGB(255, 230, 230, 230)),
+                                    borderRadius: BorderRadius.circular(10),
+                    ),
+                                  labelText: 'Type Laporan',
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 230, 230, 230),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Responsive(
+                        children: [
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 12,
+                              colM: 12,
+                              colL: 6,
+                              colXL: 6,
+                            ),
+                            child: FirebaseDatabaseQueryBuilder(
+                              pageSize: 1000000,
+                              query: FirebaseDatabase.instance.ref().child("transaksi"), 
+                              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                                final data = snapshot.docs.where((data){
+                                  final val = data.value as Map;
+                                  var hari = DateTime.parse(val["create_at"].toString()).day;
+                                  var bulan = DateTime.parse(val["create_at"].toString()).month;
+                                  var tahun = DateTime.parse(val["create_at"].toString()).year;
+
+                                  if (bulan == dateFilter.month && tahun == dateFilter.year) {
+                                    return hari == dateFilter.day;
+                                  }
+                                  return false;
+
+                                }).toList();
+
+                                double total = 0;
+                                for (var i = 0; i < data.length;i++) {
+                                  final val = data[i].value as Map; 
+                                  total += int.parse(val['total_harga'].toString()) / 1000;
+                                }
+                                return Container(
+                                  child: Card(
+                                    child: Row(
+                                      children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
+                                        width: 75,
+                                        height: 75,
+                                        decoration: BoxDecoration(
+                                          color: Colors.blueAccent
+                                        ),
+                                        child: Icon(
+                                          Icons.show_chart,
+                                          size: 40,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Hari ini',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700
+                                            ),
+                                          ),
+                                          SizedBox(height: 10,),
+                                          Text(
+                                            filter == "orderan" ? "${data.length}" :
+                                            "Rp.${currencyFormat(total)}",
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 12,
+                              colM: 12,
+                              colL: 6,
+                              colXL: 6,
+                            ),
+                            child: FirebaseDatabaseQueryBuilder(
+                              pageSize: 1000000,
+                              query: FirebaseDatabase.instance.ref().child("transaksi"), 
+                              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                                final data = snapshot.docs.where((data){
+                                  final val = data.value as Map;
+                                  var bulan = DateTime.parse(val["create_at"].toString()).month;
+                                  var tahun = DateTime.parse(val["create_at"].toString()).year;
+                                  if (tahun == dateFilter.year) {
+                                    return bulan == dateFilter.month;
+                                  }
+                                  return false;
+                                }).toList();
+
+                                double total = 0;
+                                for (var i = 0; i < data.length;i++) {
+                                  final val = data[i].value as Map; 
+                                  total += int.parse(val['total_harga'].toString()) / 1000;
+                                }
+                                return Container(
+                                  child: Card(
+                                    child: Row(
+                                      children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
+                                        width: 75,
+                                        height: 75,
+                                        decoration: BoxDecoration(
+                                          color: Colors.orangeAccent
+                                        ),
+                                        child: Icon(
+                                          Icons.show_chart,
+                                          size: 40,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Bulan ini',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700
+                                            ),
+                                          ),
+                                          SizedBox(height: 10,),
+                                          Text(
+                                            filter == "orderan" ? "${data.length}" :
+                                            "Rp.${currencyFormat(total)}",
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 12,
+                              colM: 12,
+                              colL: 6,
+                              colXL: 6,
+                            ),
+                            child: FirebaseDatabaseQueryBuilder(
+                              pageSize: 1000000,
+                              query: FirebaseDatabase.instance.ref().child("transaksi"), 
+                              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                                final data = snapshot.docs.where((data){
+                                  final val = data.value as Map;
+                                  var tahun = DateTime.parse(val["create_at"].toString()).year;
+
+                                  return tahun == dateFilter.year;
+                                }).toList();
+
+                                double total = 0;
+                                for (var i = 0; i < data.length;i++) {
+                                  final val = data[i].value as Map; 
+                                  total += int.parse(val['total_harga'].toString()) / 1000;
+                                }
+                                return Container(
+                                  child: Card(
+                                    child: Row(
+                                      children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
+                                        width: 75,
+                                        height: 75,
+                                        decoration: BoxDecoration(
+                                          color: Colors.greenAccent
+                                        ),
+                                        child: Icon(
+                                          Icons.show_chart,
+                                          size: 40,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Tahun ini',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700
+                                            ),
+                                          ),
+                                          SizedBox(height: 10,),
+                                          Text(
+                                            filter == "orderan" ? "${data.length}" :
+                                            "Rp.${currencyFormat(total)}",
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       )
                     ],
@@ -290,6 +610,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   colXL: 6
                 ),
                 child: FirebaseDatabaseQueryBuilder(
+                  pageSize: 1000000,
                   query: FirebaseDatabase.instance.ref().child("transaksi"), 
                   builder:(context, snapshot, child) {
                     if (snapshot.hasData) {  
@@ -310,12 +631,16 @@ class _DashboardPageState extends State<DashboardPage> {
                       };
                       for (var i = 0; i < data.length;i++) {
                         final val = data[i].value as Map; 
-                        var bulan = (DateFormat("M").format(DateTime.parse(val["create_at"].toString()))).toString();
-                        double total = int.parse(val['total_harga'].toString()) / 1000;
-                        // print(bulan);
-                        chartData.update(bulan, (value) => 
-                        (int.parse(value) + total).toString(),
-                        ifAbsent: () => total.toString());
+                        var bulan = DateTime.parse(val["create_at"].toString()).month;
+                        var tahun = DateTime.parse(val["create_at"].toString()).year;
+                        if (tahun == dateFilter.year) {
+                          double total = int.parse(val['total_harga'].toString()) / 1000;
+
+                          chartData.update(bulan.toString(), (value) => 
+                          filter == "orderan" ? "${int.parse(value) + 1}" :
+                          (int.parse(value) + total).toString(),
+                          ifAbsent: () => filter == "orderan" ? "${1}" : total.toString());
+                        }
                       }
                       return Container(
                         constraints: BoxConstraints(
@@ -340,7 +665,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               aspectRatio: 16 / 9,
                               child: DChartTime(
                                 chartRender: DRenderBar(),
-                                measureLabel: (value) => '${value}k',
+                                measureLabel: (value) => '${filter == "orderan" ? value :currencyFormat(value)}',
                                 domainLabel: (dateTime) {
                                     // [DateFormat] from intl package
                                     return DateFormat('MMM').format(dateTime!);
