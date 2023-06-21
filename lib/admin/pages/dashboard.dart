@@ -528,73 +528,73 @@ class _DashboardPageState extends State<DashboardPage> {
                               },
                             ),
                           ),
-                          Div(
-                            divison: Division(
-                              colXS: 12,
-                              colS: 12,
-                              colM: 12,
-                              colL: 6,
-                              colXL: 6,
-                            ),
-                            child: FirebaseDatabaseQueryBuilder(
-                              pageSize: 1000000,
-                              query: FirebaseDatabase.instance.ref().child("transaksi"), 
-                              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
-                                final data = snapshot.docs.where((data){
-                                  final val = data.value as Map;
-                                  var tahun = DateTime.parse(val["create_at"].toString()).year;
+                          // Div(
+                          //   divison: Division(
+                          //     colXS: 12,
+                          //     colS: 12,
+                          //     colM: 12,
+                          //     colL: 6,
+                          //     colXL: 6,
+                          //   ),
+                          //   child: FirebaseDatabaseQueryBuilder(
+                          //     pageSize: 1000000,
+                          //     query: FirebaseDatabase.instance.ref().child("transaksi"), 
+                          //     builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                          //       final data = snapshot.docs.where((data){
+                          //         final val = data.value as Map;
+                          //         var tahun = DateTime.parse(val["create_at"].toString()).year;
 
-                                  return tahun == dateFilter.year;
-                                }).toList();
+                          //         return tahun == dateFilter.year;
+                          //       }).toList();
 
-                                double total = 0;
-                                for (var i = 0; i < data.length;i++) {
-                                  final val = data[i].value as Map; 
-                                  total += int.parse(val['total_harga'].toString()) / 1000;
-                                }
-                                return Container(
-                                  child: Card(
-                                    child: Row(
-                                      children: [
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                                        width: 75,
-                                        height: 75,
-                                        decoration: BoxDecoration(
-                                          color: Colors.greenAccent
-                                        ),
-                                        child: Icon(
-                                          Icons.show_chart,
-                                          size: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Tahun ini',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700
-                                            ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Text(
-                                            filter == "orderan" ? "${data.length}" :
-                                            "Rp.${currencyFormat(total)}",
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                          //       double total = 0;
+                          //       for (var i = 0; i < data.length;i++) {
+                          //         final val = data[i].value as Map; 
+                          //         total += int.parse(val['total_harga'].toString()) / 1000;
+                          //       }
+                          //       return Container(
+                          //         child: Card(
+                          //           child: Row(
+                          //             children: [
+                          //             Container(
+                          //               margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
+                          //               width: 75,
+                          //               height: 75,
+                          //               decoration: BoxDecoration(
+                          //                 color: Colors.greenAccent
+                          //               ),
+                          //               child: Icon(
+                          //                 Icons.show_chart,
+                          //                 size: 40,
+                          //                 color: Colors.white,
+                          //               ),
+                          //             ),
+                          //             Column(
+                          //               mainAxisAlignment: MainAxisAlignment.start,
+                          //               crossAxisAlignment: CrossAxisAlignment.start,
+                          //               children: [
+                          //                 Text(
+                          //                   'Tahun ini',
+                          //                   overflow: TextOverflow.ellipsis,
+                          //                   style: TextStyle(
+                          //                     fontSize: 16,
+                          //                     fontWeight: FontWeight.w700
+                          //                   ),
+                          //                 ),
+                          //                 SizedBox(height: 10,),
+                          //                 Text(
+                          //                   filter == "orderan" ? "${data.length}" :
+                          //                   "Rp.${currencyFormat(total)}",
+                          //                 ),
+                          //               ],
+                          //             )
+                          //           ],
+                          //           ),
+                          //         ),
+                          //       );
+                          //     },
+                          //   ),
+                          // ),
                         ],
                       )
                     ],
@@ -634,7 +634,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         var bulan = DateTime.parse(val["create_at"].toString()).month;
                         var tahun = DateTime.parse(val["create_at"].toString()).year;
                         if (tahun == dateFilter.year) {
-                          double total = int.parse(val['total_harga'].toString()) / 1000;
+                          int total = (int.parse(val['total_harga'].toString()) / 1000).toInt();
 
                           chartData.update(bulan.toString(), (value) => 
                           filter == "orderan" ? "${int.parse(value) + 1}" :
@@ -642,6 +642,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ifAbsent: () => filter == "orderan" ? "${1}" : total.toString());
                         }
                       }
+                      print(chartData);
                       return Container(
                         constraints: BoxConstraints(
                           minWidth: 325,
