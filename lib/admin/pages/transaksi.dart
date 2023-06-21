@@ -189,7 +189,7 @@ class MyData extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text("${index + 1}")),
       DataCell(Text(val['name_customer'].toString())),
-      DataCell(Text(val['name_kasir'].toString())),
+      DataCell(Text(val['nama_kasir'].toString())),
       DataCell(Text(val['no_meja'].toString())),
       DataCell(
         Container(

@@ -642,7 +642,6 @@ class _DashboardPageState extends State<DashboardPage> {
                           ifAbsent: () => filter == "orderan" ? "${1}" : total.toString());
                         }
                       }
-                      print(chartData);
                       return Container(
                         constraints: BoxConstraints(
                           minWidth: 325,
