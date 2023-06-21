@@ -72,10 +72,10 @@ class Menu {
         await del.delete();
       }
       if (oldUrl != null) {
-        Map<String, String> val = {
+        Map<String, dynamic> val = {
           'name': data['name'],
           "deskripsi" : data['deskripsi'],
-          "harga" : data['harga'],
+          "harga" : int.parse(data['harga']),
           "kategori" : data['kategori'],
           'image': old == true ? oldUrl : url,
         };

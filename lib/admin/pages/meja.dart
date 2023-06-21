@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mantan_pos/system/meja.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MejaPage extends StatefulWidget {
@@ -31,7 +29,6 @@ class _MejaPageState extends State<MejaPage> {
           builder: (context, snapshot, _) {
             if(snapshot.hasData){
               var data = snapshot.docs;
-              List<Widget> listWidget = [];
               return Theme(
                 data: Theme.of(context).copyWith(
                   cardColor: Color.fromARGB(255, 54, 60, 66),

@@ -193,10 +193,6 @@ class _MenuUpdateState extends State<MenuUpdate> {
                   labelStyle: TextStyle(
                     color: Colors.black
                   ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(Icons.abc),
-                  ),
                   filled: true,
                   fillColor: Color.fromARGB(255, 230, 230, 230),
                   prefixIconColor: Colors.black,
@@ -237,10 +233,6 @@ class _MenuUpdateState extends State<MenuUpdate> {
                   ),
                   labelStyle: TextStyle(
                     color: Colors.black
-                  ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(Icons.email),
                   ),
                   filled: true,
                   fillColor: Color.fromARGB(255, 230, 230, 230),
@@ -290,10 +282,6 @@ class _MenuUpdateState extends State<MenuUpdate> {
                   labelStyle: TextStyle(
                     color: Colors.black
                   ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(Icons.password),
-                  ),
                   filled: true,
                   fillColor: Color.fromARGB(255, 230, 230, 230),
                   prefixIconColor: Colors.black,
@@ -313,9 +301,10 @@ class _MenuUpdateState extends State<MenuUpdate> {
               DropDownTextField(
                 controller: categoryController,
                 dropDownList: [
-                  DropDownValueModel(name: 'Kopi', value: "kopi"),
-                  DropDownValueModel(name: 'Jus', value: "jus"),
-                  DropDownValueModel(name: 'Susu', value: "susu"),
+                  DropDownValueModel(name: 'Coffee', value: "coffee"),
+                  DropDownValueModel(name: 'Non Coffee', value: "non coffee"),
+                  DropDownValueModel(name: 'Noodle', value: "noodle"),
+                  DropDownValueModel(name: 'Snack', value: "snack"),
                 ],
                 clearOption: true,
                 enableSearch: true,
@@ -339,10 +328,6 @@ class _MenuUpdateState extends State<MenuUpdate> {
                   ),
                   labelStyle: TextStyle(
                     color: Colors.black
-                  ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(Icons.people),
                   ),
                   filled: true,
                   fillColor: Color.fromARGB(255, 230, 230, 230),

@@ -81,7 +81,6 @@ class _TransaksiPageState extends State<TransaksiPage> {
                 }
                 return val['name_customer'].toString().toLowerCase().contains(filter!.toLowerCase());
               }).toList();
-              List<Widget> listWidget = [];
               return Theme(
                 data: Theme.of(context).copyWith(
                   cardColor: Color.fromARGB(255, 54, 60, 66),

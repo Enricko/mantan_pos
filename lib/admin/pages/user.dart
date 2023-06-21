@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mantan_pos/system/auth.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../widget/user/user_insert.dart';

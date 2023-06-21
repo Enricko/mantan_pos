@@ -1,5 +1,4 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
@@ -7,12 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mantan_pos/admin/widget/menu/menu_update.dart';
-import 'package:mantan_pos/system/auth.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:mantan_pos/admin/widget/menu/menu_insert.dart';
 import 'package:intl/intl.dart' as intl;
-
-import '../widget/user/user_insert.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -44,9 +40,10 @@ class _MenuPageState extends State<MenuPage> {
             controller: categoryFilter,
             dropDownList: [
               DropDownValueModel(name: 'Semua Menu', value: "all"),
-              DropDownValueModel(name: 'Kopi', value: "kopi"),
-              DropDownValueModel(name: 'Jus', value: "jus"),
-              DropDownValueModel(name: 'Susu', value: "susu"),
+              DropDownValueModel(name: 'Coffee', value: "coffee"),
+              DropDownValueModel(name: 'Non Coffee', value: "non coffee"),
+              DropDownValueModel(name: 'Noodle', value: "noodle"),
+              DropDownValueModel(name: 'Snack', value: "snack"),
             ],
             clearOption: false,
             enableSearch: true,
@@ -96,7 +93,7 @@ class _MenuPageState extends State<MenuPage> {
           ),
         ),
         FirebaseDatabaseQueryBuilder(
-          query: db!,
+          query: db,
           pageSize: 100000,
           builder: (context, snapshot, _) {
             if(snapshot.hasData){
@@ -107,7 +104,6 @@ class _MenuPageState extends State<MenuPage> {
                 }
                 return val['kategori'] == filter;
               }).toList();
-              List<Widget> listWidget = [];
               
               return Theme(
                 data: Theme.of(context).copyWith(
@@ -254,7 +250,7 @@ class MyData extends DataTableSource {
         )
       ),
       DataCell(Text(val['kategori'])),
-      DataCell(Text("Rp.${intl.NumberFormat.decimalPattern().format(val['harga'])}")),
+      DataCell(Text("Rp.${intl.NumberFormat.decimalPattern().format(int.parse(val['harga']))}")),
       DataCell(
         Row(
           children: [

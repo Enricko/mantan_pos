@@ -41,7 +41,7 @@ class _AdminHomeState extends State<AdminHome> {
     }
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      role = pref!.getString("role");
+      role = pref.getString("role");
     });
   }
 
