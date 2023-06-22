@@ -250,7 +250,7 @@ class MyData extends DataTableSource {
         )
       ),
       DataCell(Text(val['kategori'])),
-      DataCell(Text("Rp.${intl.NumberFormat.decimalPattern().format(int.parse(val['harga']))}")),
+      DataCell(Text("Rp.${intl.NumberFormat.decimalPattern().format(int.parse(val['harga'].toString()))}")),
       DataCell(
         Row(
           children: [

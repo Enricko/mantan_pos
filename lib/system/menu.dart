@@ -24,10 +24,10 @@ class Menu {
       TaskSnapshot snapshot = await task;
       var url = await snapshot.ref.getDownloadURL();
       if (url != null) {
-        Map<String, String> val = {
+        Map<String, dynamic> val = {
           'name': data['name'],
           "deskripsi" : data['deskripsi'],
-          "harga" : data['harga'],
+          "harga" : int.parse(data['harga']),
           "kategori" : data['kategori'],
           'image': url,
         };

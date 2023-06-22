@@ -61,13 +61,13 @@ class _ListOrderState extends State<ListOrder> {
                             Text("${val['nama']}")
                           ),
                           DataCell(
-                            Text("Rp.${intl.NumberFormat.decimalPattern().format(val['satuan'])}")
+                            Text("Rp.${intl.NumberFormat.decimalPattern().format(int.parse(val['satuan'].toString()))}")
                           ),
                           DataCell(
                             Text("${val['qty']}")
                           ),
                           DataCell(
-                            Text("Rp.${intl.NumberFormat.decimalPattern().format(val['total_harga'])}")
+                            Text("Rp.${intl.NumberFormat.decimalPattern().format(int.parse(val['total_harga'].toString()))}")
                           ),
                         ]
                       )
@@ -130,7 +130,7 @@ class _ListOrderState extends State<ListOrder> {
                                   ),
                                   WidgetSpan(child: SizedBox(width: 5,)),
                                   TextSpan(
-                                    text: "Rp.${subTotal}",
+                                    text: "Rp.${int.parse(subTotal.toString())}",
                                     style: GoogleFonts.roboto(
                                       color: Colors.black,
                                       fontSize: 16,
