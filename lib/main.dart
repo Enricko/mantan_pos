@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Mantan POS',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF399D44)),
         useMaterial3: true,
       ),
       builder: EasyLoading.init(),

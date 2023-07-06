@@ -3,6 +3,7 @@ import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mantan_pos/admin/pages/struk.dart';
 import 'package:mantan_pos/system/transaksi.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -145,6 +146,27 @@ class _ListOrderState extends State<ListOrder> {
                     ],
                   );
                 },
+              ),
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Struk(uid: widget.uid)));
+                }, 
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF399D44),
+                  ),
+                  padding: EdgeInsets.all(15),
+                  alignment: Alignment.center,
+                  width: 350,
+                  child: Text(
+                    "Struk",
+                    style: GoogleFonts.roboto(
+                      color:Colors.white,
+                      fontWeight: FontWeight.w800
+                    ),
+                  ),
+                )
               ),
               widget.type == "transaksi" ? Container() :
               InkWell(

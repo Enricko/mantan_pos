@@ -3,6 +3,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mantan_pos/admin/pages/laporan_print.dart';
 import 'package:responsive_ui/responsive_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as intl;
@@ -21,23 +22,24 @@ class _DashboardPageState extends State<DashboardPage> {
   DateTime dateFilter = DateTime.now();
   String? filter;
 
-  String currencyFormat(value){
+  String currencyFormat(value) {
     String val = "";
     if (value >= 1000000000) {
       val = "${intlFormat.format(value / 1000000000)} T";
-    }else if(value >= 1000000){
+    } else if (value >= 1000000) {
       val = "${intlFormat.format(value / 1000000)} M";
-    }else if(value >= 1000){
+    } else if (value >= 1000) {
       val = "${intlFormat.format(value / 1000)} Jt";
-    }else{
+    } else {
       val = "${intlFormat.format(value)} K";
     }
     return val;
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 15,right: 15,bottom:25),
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -46,10 +48,7 @@ class _DashboardPageState extends State<DashboardPage> {
             alignment: Alignment.centerLeft,
             child: Text(
               "Dashboard",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             ),
           ),
           Responsive(
@@ -64,44 +63,46 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
                 child: FirebaseDatabaseQueryBuilder(
                   pageSize: 1000000,
-                  query: FirebaseDatabase.instance.ref().child("menu"), 
-                  builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                  query: FirebaseDatabase.instance.ref().child("menu"),
+                  builder: (BuildContext context,
+                      FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
                     return Container(
                       child: Card(
                         child: Row(
                           children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                            width: 75,
-                            height: 75,
-                            decoration: BoxDecoration(
-                              color: Colors.blueAccent
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 15, top: 15, left: 15, right: 25),
+                              width: 75,
+                              height: 75,
+                              decoration:
+                                  BoxDecoration(color: Colors.blueAccent),
+                              child: Icon(
+                                Icons.food_bank,
+                                size: 40,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.food_bank,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Total Menu',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Menu',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                              ),
-                              SizedBox(height: 10,),
-                              Text(
-                                "${snapshot.docs.length}",
-                              ),
-                            ],
-                          )
-                        ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "${snapshot.docs.length}",
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     );
@@ -118,44 +119,46 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
                 child: FirebaseDatabaseQueryBuilder(
                   pageSize: 1000000,
-                  query: FirebaseDatabase.instance.ref().child("meja"), 
-                  builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                  query: FirebaseDatabase.instance.ref().child("meja"),
+                  builder: (BuildContext context,
+                      FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
                     return Container(
                       child: Card(
                         child: Row(
                           children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                            width: 75,
-                            height: 75,
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 15, top: 15, left: 15, right: 25),
+                              width: 75,
+                              height: 75,
+                              decoration:
+                                  BoxDecoration(color: Colors.redAccent),
+                              child: Icon(
+                                Icons.table_bar,
+                                size: 40,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.table_bar,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Total Meja',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Meja',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                              ),
-                              SizedBox(height: 10,),
-                              Text(
-                                "${snapshot.docs.length}",
-                              ),
-                            ],
-                          )
-                        ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "${snapshot.docs.length}",
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     );
@@ -172,44 +175,49 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
                 child: FirebaseDatabaseQueryBuilder(
                   pageSize: 1000000,
-                  query: FirebaseDatabase.instance.ref().child("user").child("kasir"), 
-                  builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                  query: FirebaseDatabase.instance
+                      .ref()
+                      .child("user")
+                      .child("kasir"),
+                  builder: (BuildContext context,
+                      FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
                     return Container(
                       child: Card(
                         child: Row(
                           children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                            width: 75,
-                            height: 75,
-                            decoration: BoxDecoration(
-                              color: Colors.greenAccent
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 15, top: 15, left: 15, right: 25),
+                              width: 75,
+                              height: 75,
+                              decoration:
+                                  BoxDecoration(color: Colors.greenAccent),
+                              child: Icon(
+                                Icons.people,
+                                size: 40,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.people,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Total Kasir',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Kasir',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                              ),
-                              SizedBox(height: 10,),
-                              Text(
-                                "${snapshot.docs.length}",
-                              ),
-                            ],
-                          )
-                        ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "${snapshot.docs.length}",
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     );
@@ -226,44 +234,49 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
                 child: FirebaseDatabaseQueryBuilder(
                   pageSize: 1000000,
-                  query: FirebaseDatabase.instance.ref().child("user").child("admin"), 
-                  builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                  query: FirebaseDatabase.instance
+                      .ref()
+                      .child("user")
+                      .child("admin"),
+                  builder: (BuildContext context,
+                      FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
                     return Container(
                       child: Card(
                         child: Row(
                           children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                            width: 75,
-                            height: 75,
-                            decoration: BoxDecoration(
-                              color: Colors.orangeAccent
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 15, top: 15, left: 15, right: 25),
+                              width: 75,
+                              height: 75,
+                              decoration:
+                                  BoxDecoration(color: Colors.orangeAccent),
+                              child: Icon(
+                                Icons.engineering,
+                                size: 40,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: Icon(
-                              Icons.engineering,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Total Admin',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total Admin',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                              ),
-                              SizedBox(height: 10,),
-                              Text(
-                                "${snapshot.docs.length}",
-                              ),
-                            ],
-                          )
-                        ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "${snapshot.docs.length}",
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     );
@@ -273,47 +286,45 @@ class _DashboardPageState extends State<DashboardPage> {
             ],
           ),
           Responsive(
-              children: [
+            children: [
               Div(
-                divison: Division(
-                  colXS: 12,
-                  colS: 12,
-                  colM: 6,
-                  colL: 6,
-                  colXL: 6
-                ),
+                divison:
+                    Division(colXS: 12, colS: 12, colM: 6, colL: 6, colXL: 6),
                 child: Container(
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         alignment: Alignment.centerLeft,
                         child: Text(
                           "Laporan Harian",
                           style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700
-                          ),
+                              fontSize: 16, fontWeight: FontWeight.w700),
                         ),
                       ),
                       Responsive(
                         children: [
                           Div(
                             divison: Division(
-                              colXS: 12,
-                              colS: 12,
-                              colM: 6,
-                              colL: 6,
-                              colXL: 6
-                            ),
+                                colXS: 12,
+                                colS: 12,
+                                colM: 6,
+                                colL: 6,
+                                colXL: 6),
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
                               child: DateTimeFormField(
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.black45),
-                                  errorStyle: TextStyle(color: Colors.redAccent),
+                                  errorStyle:
+                                      TextStyle(color: Colors.redAccent),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(width: 3,color: const Color.fromARGB(255, 230, 230, 230)),
+                                    borderSide: BorderSide(
+                                        width: 3,
+                                        color: const Color.fromARGB(
+                                            255, 230, 230, 230)),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   labelText: 'Select Date',
@@ -340,20 +351,22 @@ class _DashboardPageState extends State<DashboardPage> {
                               colXL: 6,
                             ),
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
                               child: DropDownTextField(
                                 controller: typeFilter,
                                 dropDownList: [
-                                  DropDownValueModel(name: 'Pendapatan', value: "pendapatan"),
-                                  DropDownValueModel(name: 'Orderan', value: "orderan"),
+                                  DropDownValueModel(
+                                      name: 'Pendapatan', value: "pendapatan"),
+                                  DropDownValueModel(
+                                      name: 'Orderan', value: "orderan"),
                                 ],
                                 clearOption: false,
                                 enableSearch: true,
-                                textStyle: TextStyle(
-                                  color: Colors.black
-                                ),
+                                textStyle: TextStyle(color: Colors.black),
                                 searchDecoration: const InputDecoration(
-                                    hintText: "enter your custom hint text here"),
+                                    hintText:
+                                        "enter your custom hint text here"),
                                 validator: (value) {
                                   if (value == null) {
                                     return "Required field";
@@ -368,18 +381,98 @@ class _DashboardPageState extends State<DashboardPage> {
                                 },
                                 textFieldDecoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.black45),
-                                  errorStyle: TextStyle(color: Colors.redAccent),
+                                  errorStyle:
+                                      TextStyle(color: Colors.redAccent),
                                   border: OutlineInputBorder(
-                                    borderSide:BorderSide(width: 3,color: const Color.fromARGB(255, 230, 230, 230)),
+                                    borderSide: BorderSide(
+                                        width: 3,
+                                        color: const Color.fromARGB(
+                                            255, 230, 230, 230)),
                                     borderRadius: BorderRadius.circular(10),
-                    ),
+                                  ),
                                   labelText: 'Type Laporan',
                                   filled: true,
                                   fillColor: Color.fromARGB(255, 230, 230, 230),
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 6,
+                              colM: 6,
+                              colL: 6,
+                              colXL: 6,
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LaporanPrint(
+                                              tanggal: dateFilter.toString(),
+                                              option: "harian")));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF399D44),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: EdgeInsets.all(10),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Laporan Harian",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Div(
+                            divison: Division(
+                              colXS: 12,
+                              colS: 6,
+                              colM: 6,
+                              colL: 6,
+                              colXL: 6,
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LaporanPrint(
+                                              tanggal: dateFilter.toString(),
+                                              option: "bulanan")));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF399D44),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: EdgeInsets.all(10),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Laporan Bulanan",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       Responsive(
@@ -394,63 +487,82 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             child: FirebaseDatabaseQueryBuilder(
                               pageSize: 1000000,
-                              query: FirebaseDatabase.instance.ref().child("transaksi"), 
-                              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
-                                final data = snapshot.docs.where((data){
+                              query: FirebaseDatabase.instance
+                                  .ref()
+                                  .child("transaksi"),
+                              builder: (BuildContext context,
+                                  FirebaseQueryBuilderSnapshot snapshot,
+                                  Widget? child) {
+                                final data = snapshot.docs.where((data) {
                                   final val = data.value as Map;
-                                  var hari = DateTime.parse(val["create_at"].toString()).day;
-                                  var bulan = DateTime.parse(val["create_at"].toString()).month;
-                                  var tahun = DateTime.parse(val["create_at"].toString()).year;
+                                  var hari = DateTime.parse(
+                                          val["create_at"].toString())
+                                      .day;
+                                  var bulan = DateTime.parse(
+                                          val["create_at"].toString())
+                                      .month;
+                                  var tahun = DateTime.parse(
+                                          val["create_at"].toString())
+                                      .year;
 
-                                  if (bulan == dateFilter.month && tahun == dateFilter.year) {
+                                  if (bulan == dateFilter.month &&
+                                      tahun == dateFilter.year) {
                                     return hari == dateFilter.day;
                                   }
                                   return false;
-
                                 }).toList();
 
                                 double total = 0;
-                                for (var i = 0; i < data.length;i++) {
-                                  final val = data[i].value as Map; 
-                                  total += int.parse(val['total_harga'].toString()) / 1000;
+                                for (var i = 0; i < data.length; i++) {
+                                  final val = data[i].value as Map;
+                                  total +=
+                                      int.parse(val['total_harga'].toString()) /
+                                          1000;
                                 }
                                 return Container(
                                   child: Card(
                                     child: Row(
                                       children: [
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                                        width: 75,
-                                        height: 75,
-                                        decoration: BoxDecoration(
-                                          color: Colors.blueAccent
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 15,
+                                              top: 15,
+                                              left: 15,
+                                              right: 25),
+                                          width: 75,
+                                          height: 75,
+                                          decoration: BoxDecoration(
+                                              color: Colors.blueAccent),
+                                          child: Icon(
+                                            Icons.show_chart,
+                                            size: 40,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        child: Icon(
-                                          Icons.show_chart,
-                                          size: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Hari ini',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Hari ini',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700),
                                             ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Text(
-                                            filter == "orderan" ? "${data.length}" :
-                                            "Rp.${currencyFormat(total)}",
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              filter == "orderan"
+                                                  ? "${data.length}"
+                                                  : "Rp.${currencyFormat(total)}",
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
                                 );
@@ -467,12 +579,20 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             child: FirebaseDatabaseQueryBuilder(
                               pageSize: 1000000,
-                              query: FirebaseDatabase.instance.ref().child("transaksi"), 
-                              builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
-                                final data = snapshot.docs.where((data){
+                              query: FirebaseDatabase.instance
+                                  .ref()
+                                  .child("transaksi"),
+                              builder: (BuildContext context,
+                                  FirebaseQueryBuilderSnapshot snapshot,
+                                  Widget? child) {
+                                final data = snapshot.docs.where((data) {
                                   final val = data.value as Map;
-                                  var bulan = DateTime.parse(val["create_at"].toString()).month;
-                                  var tahun = DateTime.parse(val["create_at"].toString()).year;
+                                  var bulan = DateTime.parse(
+                                          val["create_at"].toString())
+                                      .month;
+                                  var tahun = DateTime.parse(
+                                          val["create_at"].toString())
+                                      .year;
                                   if (tahun == dateFilter.year) {
                                     return bulan == dateFilter.month;
                                   }
@@ -480,47 +600,56 @@ class _DashboardPageState extends State<DashboardPage> {
                                 }).toList();
 
                                 double total = 0;
-                                for (var i = 0; i < data.length;i++) {
-                                  final val = data[i].value as Map; 
-                                  total += int.parse(val['total_harga'].toString()) / 1000;
+                                for (var i = 0; i < data.length; i++) {
+                                  final val = data[i].value as Map;
+                                  total +=
+                                      int.parse(val['total_harga'].toString()) /
+                                          1000;
                                 }
                                 return Container(
                                   child: Card(
                                     child: Row(
                                       children: [
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 15,top: 15,left: 15,right: 25),
-                                        width: 75,
-                                        height: 75,
-                                        decoration: BoxDecoration(
-                                          color: Colors.orangeAccent
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 15,
+                                              top: 15,
+                                              left: 15,
+                                              right: 25),
+                                          width: 75,
+                                          height: 75,
+                                          decoration: BoxDecoration(
+                                              color: Colors.orangeAccent),
+                                          child: Icon(
+                                            Icons.show_chart,
+                                            size: 40,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        child: Icon(
-                                          Icons.show_chart,
-                                          size: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Bulan ini',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Bulan ini',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700),
                                             ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Text(
-                                            filter == "orderan" ? "${data.length}" :
-                                            "Rp.${currencyFormat(total)}",
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              filter == "orderan"
+                                                  ? "${data.length}"
+                                                  : "Rp.${currencyFormat(total)}",
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
                                 );
@@ -537,8 +666,8 @@ class _DashboardPageState extends State<DashboardPage> {
                           //   ),
                           //   child: FirebaseDatabaseQueryBuilder(
                           //     pageSize: 1000000,
-                          //     query: FirebaseDatabase.instance.ref().child("transaksi"), 
-                          //     builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) { 
+                          //     query: FirebaseDatabase.instance.ref().child("transaksi"),
+                          //     builder: (BuildContext context, FirebaseQueryBuilderSnapshot snapshot, Widget? child) {
                           //       final data = snapshot.docs.where((data){
                           //         final val = data.value as Map;
                           //         var tahun = DateTime.parse(val["create_at"].toString()).year;
@@ -548,7 +677,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
                           //       double total = 0;
                           //       for (var i = 0; i < data.length;i++) {
-                          //         final val = data[i].value as Map; 
+                          //         final val = data[i].value as Map;
                           //         total += int.parse(val['total_harga'].toString()) / 1000;
                           //       }
                           //       return Container(
@@ -601,44 +730,47 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               Div(
-                divison: Division(
-                  colXS: 12,
-                  colS: 12,
-                  colM: 6,
-                  colL: 6,
-                  colXL: 6
-                ),
+                divison:
+                    Division(colXS: 12, colS: 12, colM: 6, colL: 6, colXL: 6),
                 child: FirebaseDatabaseQueryBuilder(
                   pageSize: 1000000,
-                  query: FirebaseDatabase.instance.ref().child("transaksi"), 
-                  builder:(context, snapshot, child) {
-                    if (snapshot.hasData) {  
+                  query: FirebaseDatabase.instance.ref().child("transaksi"),
+                  builder: (context, snapshot, child) {
+                    if (snapshot.hasData) {
                       final data = snapshot.docs;
                       Map chartData = {
-                        "1":"0",
-                        "2":"0",
-                        "3":"0",
-                        "4":"0",
-                        "5":"0",
-                        "6":"0",
-                        "7":"0",
-                        "8":"0",
-                        "9":"0",
-                        "10":"0",
-                        "11":"0",
-                        "12":"0",
+                        "1": "0",
+                        "2": "0",
+                        "3": "0",
+                        "4": "0",
+                        "5": "0",
+                        "6": "0",
+                        "7": "0",
+                        "8": "0",
+                        "9": "0",
+                        "10": "0",
+                        "11": "0",
+                        "12": "0",
                       };
-                      for (var i = 0; i < data.length;i++) {
-                        final val = data[i].value as Map; 
-                        var bulan = DateTime.parse(val["create_at"].toString()).month;
-                        var tahun = DateTime.parse(val["create_at"].toString()).year;
+                      for (var i = 0; i < data.length; i++) {
+                        final val = data[i].value as Map;
+                        var bulan =
+                            DateTime.parse(val["create_at"].toString()).month;
+                        var tahun =
+                            DateTime.parse(val["create_at"].toString()).year;
                         if (tahun == dateFilter.year) {
-                          int total = (int.parse(val['total_harga'].toString()) / 1000).toInt();
+                          int total =
+                              (int.parse(val['total_harga'].toString()) / 1000)
+                                  .toInt();
 
-                          chartData.update(bulan.toString(), (value) => 
-                          filter == "orderan" ? "${int.parse(value) + 1}" :
-                          (int.parse(value) + total).toString(),
-                          ifAbsent: () => filter == "orderan" ? "${1}" : total.toString());
+                          chartData.update(
+                              bulan.toString(),
+                              (value) => filter == "orderan"
+                                  ? "${int.parse(value) + 1}"
+                                  : (int.parse(value) + total).toString(),
+                              ifAbsent: () => filter == "orderan"
+                                  ? "${1}"
+                                  : total.toString());
                         }
                       }
                       return Container(
@@ -650,45 +782,81 @@ class _DashboardPageState extends State<DashboardPage> {
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "Laporan Bulanan",
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700
-                                ),
+                                    fontSize: 16, fontWeight: FontWeight.w700),
                               ),
                             ),
                             AspectRatio(
                               aspectRatio: 16 / 9,
                               child: DChartTime(
                                 chartRender: DRenderBar(),
-                                measureLabel: (value) => '${filter == "orderan" ? value :currencyFormat(value)}',
+                                measureLabel: (value) =>
+                                    '${filter == "orderan" ? value : currencyFormat(value)}',
                                 domainLabel: (dateTime) {
-                                    // [DateFormat] from intl package
-                                    return DateFormat('MMM').format(dateTime!);
+                                  // [DateFormat] from intl package
+                                  return DateFormat('MMM').format(dateTime!);
                                 },
                                 domainTickLength: 5,
                                 groupData: [
-                                    DChartTimeGroup(
-                                        id: 'Keyboard',
-                                        color: Colors.blue,
-                                        data: [
-                                            DChartTimeData(time: DateTime(2023, 1), value: int.parse(chartData['1'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 2), value: int.parse(chartData['2'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 3), value: int.parse(chartData['3'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 4), value: int.parse(chartData['4'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 5), value: int.parse(chartData['5'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 6), value: int.parse(chartData['6'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 7), value: int.parse(chartData['7'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 8), value: int.parse(chartData['8'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 9), value: int.parse(chartData['9'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 10), value: int.parse(chartData['10'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 11), value: int.parse(chartData['11'].toString())),
-                                            DChartTimeData(time: DateTime(2023, 12), value: int.parse(chartData['12'].toString())),
-                                        ],
-                                    ),
+                                  DChartTimeGroup(
+                                    id: 'Keyboard',
+                                    color: Colors.blue,
+                                    data: [
+                                      DChartTimeData(
+                                          time: DateTime(2023, 1),
+                                          value: int.parse(
+                                              chartData['1'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 2),
+                                          value: int.parse(
+                                              chartData['2'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 3),
+                                          value: int.parse(
+                                              chartData['3'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 4),
+                                          value: int.parse(
+                                              chartData['4'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 5),
+                                          value: int.parse(
+                                              chartData['5'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 6),
+                                          value: int.parse(
+                                              chartData['6'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 7),
+                                          value: int.parse(
+                                              chartData['7'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 8),
+                                          value: int.parse(
+                                              chartData['8'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 9),
+                                          value: int.parse(
+                                              chartData['9'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 10),
+                                          value: int.parse(
+                                              chartData['10'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 11),
+                                          value: int.parse(
+                                              chartData['11'].toString())),
+                                      DChartTimeData(
+                                          time: DateTime(2023, 12),
+                                          value: int.parse(
+                                              chartData['12'].toString())),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
@@ -702,7 +870,6 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ],
           ),
-          
         ],
       ),
     );
