@@ -176,7 +176,8 @@ class MyData extends DataTableSource {
       DataCell(Text("${index + 1}")),
       DataCell(
         Image.network(
-          "https://chart.apis.google.com/chart?cht=qr&chl=$uid&chs=125",
+          "https://chart.apis.google.com/chart?cht=qr&chl=https://enricko.site//meja?no_meja=$uid&chs=125",
+          // "https://chart.apis.google.com/chart?cht=qr&chl=$uid&chs=125",
           width: 125,
         )
         // Text(""),
