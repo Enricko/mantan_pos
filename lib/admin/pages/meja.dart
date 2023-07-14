@@ -177,10 +177,8 @@ class MyData extends DataTableSource {
       DataCell(
         Image.network(
           "http://api.qrserver.com/v1/create-qr-code/?data=https://ordermantan.com/%23/getMeja?no_meja=$uid",
-          // "https://chart.apis.google.com/chart?cht=qr&chl=$uid&chs=125",
           width: 125,
         )
-        // Text(""),
       ),
       DataCell(Text(val['no_meja'].toString())),
     ]);
